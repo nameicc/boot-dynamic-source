@@ -1,0 +1,41 @@
+server:
+  port: 8877
+
+spring:
+  application:
+    name: boot-dynamic-source
+
+  datasource:
+    # 数据连接池
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      idle-timeout: 180000
+      maximum-pool-size: 10
+      auto-commit: true
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+    # 动态数据源
+    dynamic:
+      primary: store_master
+      strict: false
+      datasource:
+        store_master:
+          url: jdbc:mysql://localhost:3306/store_master?characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        store_slave:
+          url: jdbc:mysql://localhost:3306/store_slave?characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        shop_slave:
+          url: jdbc:mysql://localhost:3306/shop_slave?characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: 123456
+          driver-class-name: com.mysql.cj.jdbc.Driver
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
